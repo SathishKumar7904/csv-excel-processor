@@ -84,7 +84,7 @@ Expect the quality gate to **fail** on this baseline (bugs, vulnerabilities, sec
 
 [`.github/workflows/quality-gate.yml`](.github/workflows/quality-gate.yml) starts **SonarQube Community LTS in the workflow** (service container on `localhost:9000`), runs `mvn verify sonar:sonar`, and waits for the quality gate.
 
-The baseline is expected to **fail the job** (`sonar.qualitygate.wait=true`). After participants fix the findings, the same workflow should pass.
+The baseline reports a **failed quality gate** (`sonar.qualitygate.wait=true`) without failing the GitHub Actions job, so the Sonar report is always uploaded for the workshop. After participants fix the findings, the report should show a passing gate.
 
 The Maven log link `http://localhost:9000/dashboard?id=csv-excel-processor` is **only on the GitHub Actions runner**. You cannot open it from your laptop.
 

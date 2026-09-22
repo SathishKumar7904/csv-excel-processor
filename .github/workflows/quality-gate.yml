@@ -53,7 +53,7 @@ jobs:
           echo "SonarQube did not become ready in time"
           exit 1
 
-      - name: Bootstrap SonarQube auth and failing quality gate
+      - name: Bootstrap SonarQube auth and workshop quality gate
         run: |
           set -euo pipefail
 
@@ -228,10 +228,10 @@ jobs:
           path: sonar-report/
           if-no-files-found: warn
 
-      - name: Fail job because quality gate did not pass
+      - name: Report quality gate result
         if: steps.scan.outcome == 'failure'
         run: |
           echo "QUALITY GATE STATUS: FAILED"
+          echo "The build and analysis completed, but the workshop quality gate found findings."
           echo "Download the sonar-quality-gate-report artifact from this workflow run."
           echo "localhost:9000 is only available on the GitHub Actions runner."
-          exit 1
