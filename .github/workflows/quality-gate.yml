@@ -10,11 +10,19 @@ jobs:
   quality-gate:
     name: SonarQube quality gate
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
     services:
       sonarqube:
         image: sonarqube:lts-community
         ports:
           - 9000:9000
+        options: >-
+          --health-cmd="curl --fail http://localhost:9000/api/system/status || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=30
         env:
           SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
           SONAR_WEB_JAVAOPTS: -Xmx512m
@@ -22,7 +30,7 @@ jobs:
           SONAR_SEARCH_JAVAOPTS: -Xmx512m
     env:
       SONAR_HOST_URL: http://localhost:9000
-      SONAR_ADMIN_PASSWORD: TrainingAdmin123
+      SONAR_ADMIN_PASSWORD: ${{ secrets.SONAR_ADMIN_PASSWORD || 'TrainingAdmin123' }}
     steps:
       - name: Check out
         uses: actions/checkout@v4
